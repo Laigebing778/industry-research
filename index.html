@@ -16,7 +16,7 @@
             --border-color: #e2e8f0;
             --success-color: #22c55e;
             --warning-color: #f59e0b;
-            --sidebar-width: 220px;
+            --sidebar-width: 240px;
         }
 
         * {
@@ -32,13 +32,11 @@
             line-height: 1.6;
         }
 
-        /* 布局 */
         .layout {
             display: flex;
             min-height: 100vh;
         }
 
-        /* 左侧导航 */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--primary-color);
@@ -109,14 +107,12 @@
             font-size: 0.85rem;
         }
 
-        /* 主内容区 */
         .main-content {
             margin-left: var(--sidebar-width);
             flex: 1;
             padding: 20px;
         }
 
-        /* 卡片 */
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -139,7 +135,14 @@
             margin: 20px 0 12px;
         }
 
-        /* 标签页 */
+        .industry-panel {
+            display: none;
+        }
+
+        .industry-panel.active {
+            display: block;
+        }
+
         .metal-tabs {
             display: flex;
             gap: 10px;
@@ -166,7 +169,6 @@
             color: white;
         }
 
-        /* 内容面板 */
         .metal-panel {
             display: none;
         }
@@ -175,7 +177,6 @@
             display: block;
         }
 
-        /* 表格 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -198,7 +199,6 @@
             background: #f8fafc;
         }
 
-        /* 标签 */
         .tag {
             display: inline-block;
             padding: 4px 12px;
@@ -214,8 +214,9 @@
         .tag.yellow { background: #f59e0b; }
         .tag.purple { background: #8b5cf6; }
         .tag.gray { background: #64748b; }
+        .tag.cyan { background: #06b6d4; }
+        .tag.pink { background: #ec4899; }
 
-        /* 驱动逻辑框 */
         .driver-box {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -244,6 +245,11 @@
             border-color: #8b5cf6;
         }
 
+        .driver-card.tech {
+            background: #cffafe;
+            border-color: #06b6d4;
+        }
+
         .driver-card h4 {
             margin-bottom: 8px;
         }
@@ -253,22 +259,6 @@
             font-size: 0.9rem;
         }
 
-        /* 供需缺口表 */
-        .gap-table {
-            margin: 15px 0;
-        }
-
-        .gap-positive {
-            color: #22c55e;
-            font-weight: 600;
-        }
-
-        .gap-negative {
-            color: #ef4444;
-            font-weight: 600;
-        }
-
-        /* 公式框 */
         .formula-box {
             background: #1e293b;
             color: #e2e8f0;
@@ -276,9 +266,9 @@
             border-radius: 8px;
             font-family: 'Consolas', monospace;
             margin: 10px 0;
+            white-space: pre-wrap;
         }
 
-        /* 产业链 */
         .chain-flow {
             display: flex;
             flex-wrap: wrap;
@@ -300,7 +290,6 @@
             font-size: 1.2rem;
         }
 
-        /* 公司卡片 */
         .company-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -330,28 +319,30 @@
             font-size: 0.85rem;
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-            }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
 
-            .sidebar.open {
-                transform: translateX(0);
-            }
+        .overview-item {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
 
-            .main-content {
-                margin-left: 0;
-            }
+        .overview-item h4 {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
 
-            .chain-flow {
-                flex-direction: column;
-            }
-
-            .chain-arrow {
-                transform: rotate(90deg);
-            }
+        .overview-item p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
         }
 
         .footer {
@@ -360,70 +351,90 @@
             color: #64748b;
             font-size: 0.85rem;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="layout">
-        <!-- 左侧导航 -->
         <nav class="sidebar">
             <div class="sidebar-header">
                 <h1>行业研究框架</h1>
-                <p>Industry Research Framework</p>
+                <p>Industry Research Framework v2.0</p>
             </div>
 
             <div class="nav-section">
-                <div class="nav-section-title">行业分类</div>
+                <div class="nav-section-title">大宗商品</div>
 
                 <div class="nav-item active" onclick="showIndustry('metals')">
                     <span class="nav-item-icon">⛏️</span>
                     <span class="nav-item-text">有色金属</span>
                 </div>
-
-                <div class="nav-subitem nav-item" onclick="showMetal('copper')">
-                    <span class="nav-item-text">→ 铜</span>
-                </div>
-                <div class="nav-subitem nav-item" onclick="showMetal('aluminum')">
-                    <span class="nav-item-text">→ 电解铝</span>
-                </div>
-                <div class="nav-subitem nav-item" onclick="showMetal('gold')">
-                    <span class="nav-item-text">→ 黄金</span>
-                </div>
-                <div class="nav-subitem nav-item" onclick="showMetal('lithium')">
-                    <span class="nav-item-text">→ 锂</span>
-                </div>
-                <div class="nav-subitem nav-item" onclick="showMetal('cobalt')">
-                    <span class="nav-item-text">→ 钴</span>
-                </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('metals', 'copper')">→ 铜</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('metals', 'aluminum')">→ 电解铝</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('metals', 'gold')">→ 黄金</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('metals', 'lithium')">→ 锂</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('metals', 'cobalt')">→ 钴</div>
 
                 <div class="nav-item" onclick="showIndustry('black')">
                     <span class="nav-item-icon">🏗️</span>
                     <span class="nav-item-text">黑色金属</span>
                 </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('black', 'steel')">→ 钢铁</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('black', 'ironore')">→ 铁矿石</div>
 
                 <div class="nav-item" onclick="showIndustry('energy')">
                     <span class="nav-item-icon">⚡</span>
                     <span class="nav-item-text">能源化工</span>
                 </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('energy', 'oil')">→ 石化</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('energy', 'chemical')">→ 化工</div>
+            </div>
 
-                <div class="nav-item" onclick="showIndustry('agri')">
-                    <span class="nav-item-icon">🌾</span>
-                    <span class="nav-item-text">农产品</span>
+            <div class="nav-section">
+                <div class="nav-section-title">科技制造</div>
+
+                <div class="nav-item" onclick="showIndustry('power')">
+                    <span class="nav-item-icon">🔋</span>
+                    <span class="nav-item-text">电力新能源</span>
                 </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('power', 'pv')">→ 光伏</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('power', 'wind')">→ 风电</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('power', 'storage')">→ 储能</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('power', 'grid')">→ 电网</div>
+
+                <div class="nav-item" onclick="showIndustry('tmt')">
+                    <span class="nav-item-icon">💻</span>
+                    <span class="nav-item-text">TMT</span>
+                </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('tmt', 'optical')">→ 光模块</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('tmt', 'semiconductor')">→ 半导体</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('tmt', 'ai')">→ AI算力</div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-section-title">工具</div>
                 <div class="nav-item" onclick="showIndustry('api')">
-                    <span class="nav-item-icon">💻</span>
+                    <span class="nav-item-icon">🔧</span>
                     <span class="nav-item-text">数据接口</span>
                 </div>
             </div>
         </nav>
 
-        <!-- 主内容 -->
         <main class="main-content">
-            <!-- 有色金属概览 -->
-            <div id="metals-overview" class="industry-panel">
+            <!-- 有色金属 -->
+            <div id="metals-panel" class="industry-panel active">
                 <div class="card">
                     <h2>有色金属行业研究框架</h2>
                     <p>有色金属价格分析需兼顾宏观经济、供需格局、市场博弈。不同金属定价属性有明显分化：</p>
@@ -447,18 +458,9 @@
                                 <li>实际利率 = 名义利率 - 通胀预期</li>
                             </ul>
                         </div>
-                        <div class="driver-card both">
-                            <h4>双重属性型</h4>
-                            <p><strong>代表品种：</strong>铜(金融+供需)</p>
-                            <ul>
-                                <li>金融属性：与美元、风险偏好相关</li>
-                                <li>商品属性：电网、地产、新能源需求</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
 
-                <!-- 品种选择标签 -->
                 <div class="metal-tabs">
                     <div class="metal-tab active" onclick="showMetal('copper')">铜</div>
                     <div class="metal-tab" onclick="showMetal('aluminum')">电解铝</div>
@@ -471,7 +473,6 @@
                 <div id="copper-panel" class="metal-panel active">
                     <div class="card">
                         <h2>铜 - 工业金属之王</h2>
-
                         <div style="margin: 15px 0;">
                             <span class="tag">供需驱动</span>
                             <span class="tag purple">金融属性</span>
@@ -498,55 +499,6 @@
                             </div>
                         </div>
 
-                        <h3>供需缺口测算方法</h3>
-                        <div class="formula-box">
-供需缺口 = 供给量 - 需求量
-
-供给量 = 矿山产量 + 再生铜 + 进口量 - 出口量
-需求量 = 电力用铜 + 建筑用铜 + 家电用铜 + 汽车用铜 + 其他
-
-关键跟踪指标：
-- TC/RC加工费：反映矿端与冶炼端供需
-- 显性库存：LME + SHFE + COMEX
-- 现货升贴水：反映短期供需紧张程度
-                        </div>
-
-                        <h3>当前供需状况（2024-2025）</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>年份</th>
-                                    <th>供给(万吨)</th>
-                                    <th>需求(万吨)</th>
-                                    <th>缺口(万吨)</th>
-                                    <th>评价</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023A</td>
-                                    <td>2,236</td>
-                                    <td>2,254</td>
-                                    <td class="gap-negative">-18</td>
-                                    <td><span class="tag red">小幅缺口</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2024E</td>
-                                    <td>2,298</td>
-                                    <td>2,332</td>
-                                    <td class="gap-negative">-34</td>
-                                    <td><span class="tag red">缺口扩大</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2025E</td>
-                                    <td>2,380</td>
-                                    <td>2,410</td>
-                                    <td class="gap-negative">-30</td>
-                                    <td><span class="tag yellow">持续紧张</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
                         <h3>产业链</h3>
                         <div class="chain-flow">
                             <span class="chain-node">铜矿开采</span>
@@ -556,8 +508,6 @@
                             <span class="chain-node">粗铜冶炼</span>
                             <span class="chain-arrow">→</span>
                             <span class="chain-node">精炼铜</span>
-                            <span class="chain-arrow">→</span>
-                            <span class="chain-node">铜材加工</span>
                             <span class="chain-arrow">→</span>
                             <span class="chain-node">终端应用</span>
                         </div>
@@ -574,11 +524,6 @@
                                 <div class="company-name">江西铜业</div>
                                 <div class="company-business">国内最大铜冶炼企业，全产业链布局</div>
                             </div>
-                            <div class="company-card">
-                                <div class="company-code">000630.SZ</div>
-                                <div class="company-name">铜陵有色</div>
-                                <div class="company-business">铜冶炼加工，铜箔业务拓展中</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -587,7 +532,6 @@
                 <div id="aluminum-panel" class="metal-panel">
                     <div class="card">
                         <h2>电解铝 - 中国定价主导</h2>
-
                         <div style="margin: 15px 0;">
                             <span class="tag">供需驱动</span>
                             <span class="tag green">中国定价</span>
@@ -615,59 +559,6 @@
                             </div>
                         </div>
 
-                        <h3>供需缺口测算方法</h3>
-                        <div class="formula-box">
-供需缺口 = 产量 - 表观消费量
-
-关键变量：
-- 产量 = 运行产能 × 运行天数
-- 表观消费量 = 产量 + 进口 - 出口
-
-季节性特征：
-- Q1（春节后）：累库期
-- Q2-Q3：去库期（旺季）
-- Q4：震荡期
-                        </div>
-
-                        <h3>当前供需状况</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>年份</th>
-                                    <th>产能(万吨)</th>
-                                    <th>产量(万吨)</th>
-                                    <th>需求(万吨)</th>
-                                    <th>缺口</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023A</td>
-                                    <td>4,450</td>
-                                    <td>4,150</td>
-                                    <td>4,200</td>
-                                    <td class="gap-negative">-50</td>
-                                </tr>
-                                <tr>
-                                    <td>2024A</td>
-                                    <td>4,480</td>
-                                    <td>4,280</td>
-                                    <td>4,350</td>
-                                    <td class="gap-negative">-70</td>
-                                </tr>
-                                <tr>
-                                    <td>2025E</td>
-                                    <td>4,500</td>
-                                    <td>4,350</td>
-                                    <td>4,420</td>
-                                    <td class="gap-negative">-70</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p style="color:#64748b;font-size:0.9rem;margin-top:10px;">
-                            注：产能接近天花板，供给弹性不足，需求增长主要靠新能源汽车、光伏等新需求拉动
-                        </p>
-
                         <h3>主要公司</h3>
                         <div class="company-grid">
                             <div class="company-card">
@@ -680,11 +571,6 @@
                                 <div class="company-name">云铝股份</div>
                                 <div class="company-business">绿色电解铝，水电铝优势</div>
                             </div>
-                            <div class="company-card">
-                                <div class="company-code">000933.SZ</div>
-                                <div class="company-name">神火股份</div>
-                                <div class="company-business">电解铝+煤炭双主业</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -693,7 +579,6 @@
                 <div id="gold-panel" class="metal-panel">
                     <div class="card">
                         <h2>黄金 - 金融属性主导</h2>
-
                         <div style="margin: 15px 0;">
                             <span class="tag yellow">金融属性</span>
                             <span class="tag">避险资产</span>
@@ -713,71 +598,6 @@
 - 金价与实际利率呈负相关
                         </div>
 
-                        <h3>金价驱动因素</h3>
-                        <div class="driver-box">
-                            <div class="driver-card financial">
-                                <h4>核心驱动</h4>
-                                <ul>
-                                    <li><strong>实际利率</strong>：金价定价锚</li>
-                                    <li>美联储货币政策</li>
-                                    <li>通胀预期</li>
-                                </ul>
-                            </div>
-                            <div class="driver-card supply-demand">
-                                <h4>需求因素</h4>
-                                <ul>
-                                    <li>央行购金（2024年约1000吨）</li>
-                                    <li>ETF持仓变化</li>
-                                    <li>首饰需求（中国、印度）</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <h3>与工业金属的本质区别</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>对比项</th>
-                                    <th>黄金</th>
-                                    <th>铜/铝</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>核心定价因素</td>
-                                    <td>实际利率（金融属性）</td>
-                                    <td>供需缺口（商品属性）</td>
-                                </tr>
-                                <tr>
-                                    <td>价格弹性</td>
-                                    <td>实际利率下行弹性 > 上行弹性</td>
-                                    <td>供需缺口决定方向</td>
-                                </tr>
-                                <tr>
-                                    <td>库存意义</td>
-                                    <td>不关键（存量资产）</td>
-                                    <td>关键（边际定价）</td>
-                                </tr>
-                                <tr>
-                                    <td>周期属性</td>
-                                    <td>逆周期（避险）</td>
-                                    <td>顺周期（经济晴雨表）</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>2026年金价展望</h3>
-                        <div class="formula-box">
-长江证券测算（2025-11报告）：
-
-情景假设：
-- 实际利率下行100BP
-- 央行购金维持约1000吨
-- ETF购金维持当前水平
-
-<span style="color:#22c55e;">2026年金价中枢：5400~5600美元/盎司</span>
-                        </div>
-
                         <h3>主要公司</h3>
                         <div class="company-grid">
                             <div class="company-card">
@@ -790,11 +610,6 @@
                                 <div class="company-name">中金黄金</div>
                                 <div class="company-business">央企背景，金铜双主业</div>
                             </div>
-                            <div class="company-card">
-                                <div class="company-code">002155.SZ</div>
-                                <div class="company-name">湖南黄金</div>
-                                <div class="company-business">黄金+锑+钨多金属</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -803,7 +618,6 @@
                 <div id="lithium-panel" class="metal-panel">
                     <div class="card">
                         <h2>锂 - 新能源金属</h2>
-
                         <div style="margin: 15px 0;">
                             <span class="tag">供需驱动</span>
                             <span class="tag green">新能源</span>
@@ -818,98 +632,6 @@
 需求 = 新能源汽车 + 储能 + 3C电子 + 传统用途
                         </div>
 
-                        <h3>全球锂供需平衡表（广发证券 2026.01）</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>项目</th>
-                                    <th>2023A</th>
-                                    <th>2024A</th>
-                                    <th>2025E</th>
-                                    <th>2026E</th>
-                                    <th>2027E</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>供给(LCE万吨)</strong></td>
-                                    <td>105.6</td>
-                                    <td>137.6</td>
-                                    <td>169.0</td>
-                                    <td>213.9</td>
-                                    <td>249.2</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>需求(LCE万吨)</strong></td>
-                                    <td>104.4</td>
-                                    <td>128.0</td>
-                                    <td>170.5</td>
-                                    <td>208.6</td>
-                                    <td>251.1</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>缺口(万吨)</strong></td>
-                                    <td class="gap-positive">+1.2</td>
-                                    <td class="gap-positive">+9.6</td>
-                                    <td class="gap-negative">-1.5</td>
-                                    <td class="gap-positive">+5.3</td>
-                                    <td class="gap-negative">-1.9</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>缺口比例</strong></td>
-                                    <td>+1.1%</td>
-                                    <td>+7.5%</td>
-                                    <td>-0.9%</td>
-                                    <td>+2.5%</td>
-                                    <td>-0.7%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>供给结构</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>供给来源</th>
-                                    <th>2024A</th>
-                                    <th>2025E</th>
-                                    <th>特点</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>海外盐湖</td>
-                                    <td>34.7万吨</td>
-                                    <td>42.5万吨</td>
-                                    <td>智利、阿根廷，成本低</td>
-                                </tr>
-                                <tr>
-                                    <td>国内盐湖</td>
-                                    <td>15.4万吨</td>
-                                    <td>16.7万吨</td>
-                                    <td>盐湖股份、藏格矿业</td>
-                                </tr>
-                                <tr>
-                                    <td>海外锂矿</td>
-                                    <td>62.4万吨</td>
-                                    <td>75.9万吨</td>
-                                    <td>澳洲锂辉石为主</td>
-                                </tr>
-                                <tr>
-                                    <td>国内锂矿</td>
-                                    <td>18.1万吨</td>
-                                    <td>25.9万吨</td>
-                                    <td>四川、江西锂矿</td>
-                                </tr>
-                                <tr>
-                                    <td>回收</td>
-                                    <td>7.0万吨</td>
-                                    <td>8.0万吨</td>
-                                    <td>占比逐步提升</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
                         <h3>主要公司</h3>
                         <div class="company-grid">
                             <div class="company-card">
@@ -922,11 +644,6 @@
                                 <div class="company-name">天齐锂业</div>
                                 <div class="company-business">全球优质锂资源，Greenbushes</div>
                             </div>
-                            <div class="company-card">
-                                <div class="company-code">000792.SZ</div>
-                                <div class="company-name">盐湖股份</div>
-                                <div class="company-business">国内最大盐湖提锂企业</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -935,62 +652,11 @@
                 <div id="cobalt-panel" class="metal-panel">
                     <div class="card">
                         <h2>钴 - 电池材料金属</h2>
-
                         <div style="margin: 15px 0;">
                             <span class="tag">供需驱动</span>
                             <span class="tag red">刚果主导</span>
                             <span class="tag">电池需求</span>
                         </div>
-
-                        <h3>供需平衡表（广发证券）</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>项目</th>
-                                    <th>2023A</th>
-                                    <th>2024A</th>
-                                    <th>2025E</th>
-                                    <th>2026E</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>供给(万吨)</strong></td>
-                                    <td>23.8</td>
-                                    <td>30.0</td>
-                                    <td>19.9</td>
-                                    <td>20.4</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>需求(万吨)</strong></td>
-                                    <td>20.6</td>
-                                    <td>21.1</td>
-                                    <td>22.2</td>
-                                    <td>23.4</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>缺口(万吨)</strong></td>
-                                    <td class="gap-positive">+3.2</td>
-                                    <td class="gap-positive">+8.9</td>
-                                    <td class="gap-negative">-2.3</td>
-                                    <td class="gap-negative">-2.9</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>缺口比例</strong></td>
-                                    <td>+13.3%</td>
-                                    <td>+29.7%</td>
-                                    <td>-11.6%</td>
-                                    <td>-14.3%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>供给特点</h3>
-                        <ul style="margin-left:20px;">
-                            <li>刚果(金)占全球产量约70%</li>
-                            <li>嘉能可、洛阳钼业为主要生产商</li>
-                            <li>钴多为铜钴伴生矿，供给受铜价影响</li>
-                        </ul>
 
                         <h3>主要公司</h3>
                         <div class="company-grid">
@@ -999,10 +665,559 @@
                                 <div class="company-name">洛阳钼业</div>
                                 <div class="company-business">全球最大钴生产商之一，TFM+KFM</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 黑色金属 -->
+            <div id="black-panel" class="industry-panel">
+                <div class="card">
+                    <h2>黑色金属行业研究框架</h2>
+                    <p>钢铁行业是典型重资产行业，需求主导价格方向，供给决定利润分配。普钢拼成本，特钢拼技术。</p>
+
+                    <div class="driver-box">
+                        <div class="driver-card supply-demand">
+                            <h4>需求主导</h4>
+                            <ul>
+                                <li>地产(30-35%)：新开工、施工面积</li>
+                                <li>基建(20-25%)：专项债、财政支出</li>
+                                <li>制造(15-20%)：机械、汽车、家电</li>
+                            </ul>
+                        </div>
+                        <div class="driver-card financial">
+                            <h4>成本结构</h4>
+                            <ul>
+                                <li>铁矿石：40-50%</li>
+                                <li>焦炭/焦煤：20-30%</li>
+                                <li>废钢：10-20%</li>
+                                <li>其他：10-20%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-tabs">
+                    <div class="metal-tab active" onclick="showBlack('steel')">钢铁</div>
+                    <div class="metal-tab" onclick="showBlack('ironore')">铁矿石</div>
+                </div>
+
+                <!-- 钢铁分析面板 -->
+                <div id="steel-panel" class="metal-panel active">
+                    <div class="card">
+                        <h2>钢铁 - 周期之王</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">需求主导</span>
+                            <span class="tag">重资产</span>
+                            <span class="tag">地产相关</span>
+                        </div>
+
+                        <h3>产业链（长流程）</h3>
+                        <div class="chain-flow">
+                            <span class="chain-node">铁矿石</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">高炉炼铁</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">转炉炼钢</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">连铸</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">轧材</span>
+                        </div>
+
+                        <h3>普钢 vs 特钢</h3>
+                        <table>
+                            <thead>
+                                <tr><th>维度</th><th>普钢</th><th>特钢</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>核心竞争力</td><td>成本控制</td><td>技术+管理</td></tr>
+                                <tr><td>产品特性</td><td>同质化</td><td>差异化</td></tr>
+                                <tr><td>定价能力</td><td>弱</td><td>强</td></tr>
+                                <tr><td>盈利稳定性</td><td>周期性强</td><td>相对稳定</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
                             <div class="company-card">
-                                <div class="company-code">002460.SZ</div>
-                                <div class="company-name">华友钴业</div>
-                                <div class="company-business">钴镍锂一体化，正极材料布局</div>
+                                <div class="company-code">600019.SH</div>
+                                <div class="company-name">宝钢股份</div>
+                                <div class="company-business">全球最大钢企，板材龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">000708.SZ</div>
+                                <div class="company-name">中信特钢</div>
+                                <div class="company-business">全球最大特钢企业</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">000932.SZ</div>
+                                <div class="company-name">华菱钢铁</div>
+                                <div class="company-business">华南龙头，产品升级</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 铁矿石分析面板 -->
+                <div id="ironore-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>铁矿石 - 国际定价</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">全球定价</span>
+                            <span class="tag red">四大矿主导</span>
+                            <span class="tag">议价能力弱</span>
+                        </div>
+
+                        <h3>四大矿格局</h3>
+                        <table>
+                            <thead>
+                                <tr><th>矿企</th><th>国家</th><th>特点</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>淡水河谷</td><td>巴西</td><td>最大铁矿石生产商</td></tr>
+                                <tr><td>力拓</td><td>澳洲</td><td>皮尔巴拉地区</td></tr>
+                                <tr><td>必和必拓</td><td>澳洲</td><td>综合矿业巨头</td></tr>
+                                <tr><td>FMG</td><td>澳洲</td><td>专注铁矿石</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>价格驱动</h3>
+                        <div class="formula-box">
+供给端：四大矿产量 + 非主流矿
+需求端：中国生铁产量（占全球70%）
+
+关键结论：
+- 铁矿定价权在海外，中国是价格接受者
+- 钢厂利润决定铁矿价格上限
+- 港口库存反映供需紧张程度
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 能源化工 -->
+            <div id="energy-panel" class="industry-panel">
+                <div class="card">
+                    <h2>能源化工行业研究框架</h2>
+                    <p>石化化工行业以油价为核心变量，价格传导机制是研究关键。周期性明显，成本优势企业穿越周期。</p>
+
+                    <div class="driver-box">
+                        <div class="driver-card financial">
+                            <h4>油价传导</h4>
+                            <ul>
+                                <li>原油价格决定原料成本</li>
+                                <li>价差反映行业利润</li>
+                                <li>下游需求决定价格接受能力</li>
+                            </ul>
+                        </div>
+                        <div class="driver-card supply-demand">
+                            <h4>成本曲线</h4>
+                            <ul>
+                                <li>油制：油价+加工费</li>
+                                <li>煤制：煤价+加工费</li>
+                                <li>轻烃：气价+加工费</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-tabs">
+                    <div class="metal-tab active" onclick="showEnergy('oil')">石化</div>
+                    <div class="metal-tab" onclick="showEnergy('chemical')">化工</div>
+                </div>
+
+                <!-- 石化分析面板 -->
+                <div id="oil-panel" class="metal-panel active">
+                    <div class="card">
+                        <h2>石化 - 油价传导</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">油价驱动</span>
+                            <span class="tag">价差分析</span>
+                            <span class="tag">一体化优势</span>
+                        </div>
+
+                        <h3>产业链</h3>
+                        <div class="chain-flow">
+                            <span class="chain-node">原油</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">炼油</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">烯烃</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">塑料</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">终端</span>
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">600028.SH</div>
+                                <div class="company-name">中国石化</div>
+                                <div class="company-business">全产业链龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">600988.SH</div>
+                                <div class="company-name">荣盛石化</div>
+                                <div class="company-business">浙石化大炼化</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">600346.SH</div>
+                                <div class="company-name">恒力石化</div>
+                                <div class="company-business">大炼化龙头</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 化工分析面板 -->
+                <div id="chemical-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>化工 - 周期与成长</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">周期性</span>
+                            <span class="tag">成本优势</span>
+                            <span class="tag">国产替代</span>
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">600309.SH</div>
+                                <div class="company-name">万华化学</div>
+                                <div class="company-business">MDI全球龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">600426.SH</div>
+                                <div class="company-name">华鲁恒升</div>
+                                <div class="company-business">煤化工龙头</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 电力新能源 -->
+            <div id="power-panel" class="industry-panel">
+                <div class="card">
+                    <h2>电力新能源行业研究框架</h2>
+                    <p>双碳目标驱动能源转型，新能源装机持续增长。技术进步推动成本下降，产业链利润向技术领先者集中。</p>
+
+                    <div class="driver-box">
+                        <div class="driver-card supply-demand">
+                            <h4>政策驱动</h4>
+                            <ul>
+                                <li>2025年非化石能源消费20%</li>
+                                <li>2030年碳达峰，非化石能源25%</li>
+                                <li>2060年碳中和，非化石能源80%+</li>
+                            </ul>
+                        </div>
+                        <div class="driver-card tech">
+                            <h4>技术趋势</h4>
+                            <ul>
+                                <li>光伏：PERC→TOPCon→HJT</li>
+                                <li>风电：大型化、海上化</li>
+                                <li>储能：电化学储能快速增长</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-tabs">
+                    <div class="metal-tab active" onclick="showPower('pv')">光伏</div>
+                    <div class="metal-tab" onclick="showPower('wind')">风电</div>
+                    <div class="metal-tab" onclick="showPower('storage')">储能</div>
+                    <div class="metal-tab" onclick="showPower('grid')">电网</div>
+                </div>
+
+                <!-- 光伏分析面板 -->
+                <div id="pv-panel" class="metal-panel active">
+                    <div class="card">
+                        <h2>光伏 - 成本持续下降</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">技术迭代</span>
+                            <span class="tag">产能过剩</span>
+                            <span class="tag">中国主导</span>
+                        </div>
+
+                        <h3>产业链</h3>
+                        <div class="chain-flow">
+                            <span class="chain-node">多晶硅</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">硅片</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">电池片</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">组件</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">电站</span>
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">601012.SH</div>
+                                <div class="company-name">隆基绿能</div>
+                                <div class="company-business">硅片+组件龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">600438.SH</div>
+                                <div class="company-name">通威股份</div>
+                                <div class="company-business">多晶硅+电池片龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">002459.SZ</div>
+                                <div class="company-name">晶澳科技</div>
+                                <div class="company-business">一体化组件</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 风电分析面板 -->
+                <div id="wind-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>风电 - 大型化趋势</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">大型化</span>
+                            <span class="tag cyan">海风增长</span>
+                            <span class="tag">降本增效</span>
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">002202.SZ</div>
+                                <div class="company-name">金风科技</div>
+                                <div class="company-business">风机龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">601615.SH</div>
+                                <div class="company-name">明阳智能</div>
+                                <div class="company-business">海风龙头</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 储能分析面板 -->
+                <div id="storage-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>储能 - 政策驱动高增长</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">强制配储</span>
+                            <span class="tag">峰谷套利</span>
+                            <span class="tag">高增长</span>
+                        </div>
+
+                        <h3>经济性公式</h3>
+                        <div class="formula-box">
+储能收益 = 峰谷价差收益 + 辅助服务收益 + 容量租赁收益
+
+关键变量：
+- 峰谷价差（>0.7元/kWh有经济性）
+- 循环次数（>6000次）
+- 系统成本（<1.5元/Wh）
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">300750.SZ</div>
+                                <div class="company-name">宁德时代</div>
+                                <div class="company-business">动力电池+储能龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">300274.SZ</div>
+                                <div class="company-name">阳光电源</div>
+                                <div class="company-business">逆变器+储能系统</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 电网分析面板 -->
+                <div id="grid-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>电网 - 新型电力系统</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">特高压</span>
+                            <span class="tag">智能化</span>
+                            <span class="tag">配电网</span>
+                        </div>
+
+                        <h3>新型电力系统</h3>
+                        <div class="formula-box">
+传统电力系统 → 新型电力系统
+
+源随荷动 → 源网荷储互动
+集中式为主 → 集中式+分布式
+火电为主 → 新能源为主
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TMT -->
+            <div id="tmt-panel" class="industry-panel">
+                <div class="card">
+                    <h2>TMT行业研究框架</h2>
+                    <p>AI驱动算力需求爆发，光模块、服务器、芯片为核心环节。技术迭代快，头部集中度高。</p>
+
+                    <div class="driver-box">
+                        <div class="driver-card tech">
+                            <h4>AI驱动</h4>
+                            <ul>
+                                <li>大模型训练：万卡级算力需求</li>
+                                <li>推理部署：端侧AI兴起</li>
+                                <li>光模块：400G→800G→1.6T</li>
+                            </ul>
+                        </div>
+                        <div class="driver-card supply-demand">
+                            <h4>国产替代</h4>
+                            <ul>
+                                <li>半导体设备：国产化率15-20%</li>
+                                <li>半导体材料：国产化率10-15%</li>
+                                <li>先进制程：持续攻关</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-tabs">
+                    <div class="metal-tab active" onclick="showTMT('optical')">光模块</div>
+                    <div class="metal-tab" onclick="showTMT('semiconductor')">半导体</div>
+                    <div class="metal-tab" onclick="showTMT('ai')">AI算力</div>
+                </div>
+
+                <!-- 光模块分析面板 -->
+                <div id="optical-panel" class="metal-panel active">
+                    <div class="card">
+                        <h2>光模块 - AI算力核心</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag cyan">AI驱动</span>
+                            <span class="tag">技术迭代</span>
+                            <span class="tag">头部集中</span>
+                        </div>
+
+                        <h3>产业链</h3>
+                        <div class="chain-flow">
+                            <span class="chain-node">光芯片</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">光模块</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">数据中心</span>
+                        </div>
+
+                        <h3>技术演进</h3>
+                        <div class="formula-box">
+100G → 400G → 800G → 1.6T
+
+新产品溢价高，成熟产品价格下降
+技术迭代驱动价值量提升
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">300308.SZ</div>
+                                <div class="company-name">中际旭创</div>
+                                <div class="company-business">全球光模块龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">300502.SZ</div>
+                                <div class="company-name">新易盛</div>
+                                <div class="company-business">光模块新贵</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">300394.SZ</div>
+                                <div class="company-name">天孚通信</div>
+                                <div class="company-business">光器件平台</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 半导体分析面板 -->
+                <div id="semiconductor-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>半导体 - 国产替代主线</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">国产替代</span>
+                            <span class="tag">设备突破</span>
+                            <span class="tag">材料攻关</span>
+                        </div>
+
+                        <h3>国产化率</h3>
+                        <table>
+                            <thead>
+                                <tr><th>环节</th><th>国产化率</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>设计</td><td>30-40%</td></tr>
+                                <tr><td>制造</td><td>20-30%</td></tr>
+                                <tr><td>设备</td><td>15-20%</td></tr>
+                                <tr><td>材料</td><td>10-15%</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">002371.SZ</div>
+                                <div class="company-name">北方华创</div>
+                                <div class="company-business">半导体设备龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">688012.SH</div>
+                                <div class="company-name">中微公司</div>
+                                <div class="company-business">刻蚀设备</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">688981.SH</div>
+                                <div class="company-name">中芯国际</div>
+                                <div class="company-business">晶圆代工</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI算力分析面板 -->
+                <div id="ai-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>AI算力 - 大模型驱动</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag cyan">大模型</span>
+                            <span class="tag">算力需求</span>
+                            <span class="tag">训练+推理</span>
+                        </div>
+
+                        <h3>产业链</h3>
+                        <div class="chain-flow">
+                            <span class="chain-node">GPU芯片</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">AI服务器</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-node">大模型训练</span>
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">000977.SZ</div>
+                                <div class="company-name">浪潮信息</div>
+                                <div class="company-business">AI服务器龙头</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">601138.SH</div>
+                                <div class="company-name">工业富联</div>
+                                <div class="company-business">服务器代工</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">688256.SH</div>
+                                <div class="company-name">寒武纪</div>
+                                <div class="company-business">AI芯片</div>
                             </div>
                         </div>
                     </div>
@@ -1010,7 +1225,7 @@
             </div>
 
             <!-- API接口面板 -->
-            <div id="api-panel" class="industry-panel" style="display:none;">
+            <div id="api-panel" class="industry-panel">
                 <div class="card">
                     <h2>Choice API 数据接口</h2>
 
@@ -1023,8 +1238,14 @@ em.login()
 data = em.pedb.get_data(
     [<span style="color:#22c55e;">'CU2504.SHF'</span>],
     <span style="color:#22c55e;">'Close,Open,High,Low,Volume,OI'</span>,
-    <span style="color:#22c55e;">'2026-01-01'</span>, <span style="color:#22c55e;">'2026-03-12'</span>
+    <span style="color:#22c55e;">'2026-01-01'</span>, <span style="color:#22c55e;">'2026-03-15'</span>
 )
+
+<span style="color:#3b82f6;"># 螺纹钢期货</span>
+data = em.pedb.get_data(['RB2505.SHF'], 'Close,Open,High,Low,Volume,OI', ...)
+
+<span style="color:#3b82f6;"># 原油期货</span>
+data = em.pedb.get_data(['SC2505.INE'], 'Close,Open,High,Low,Volume,OI', ...)
                     </div>
 
                     <h3>股票行情与估值</h3>
@@ -1043,24 +1264,25 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
 data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span style="color:#22c55e;">'ROE,NETPROFIT,OPERATEREVE'</span>, ...)
                     </div>
 
-                    <h3>常用指标代码</h3>
+                    <h3>常用期货代码</h3>
                     <table>
                         <thead>
-                            <tr><th>指标</th><th>代码</th><th>说明</th></tr>
+                            <tr><th>品种</th><th>代码</th><th>交易所</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>收盘价</td><td>Close/CLOSE</td><td>日度</td></tr>
-                            <tr><td>持仓量</td><td>OI</td><td>期货专用</td></tr>
-                            <tr><td>市值</td><td>MV</td><td>股票专用</td></tr>
-                            <tr><td>PE/市盈率</td><td>PE/PETTM</td><td>估值</td></tr>
-                            <tr><td>ROE</td><td>ROE</td><td>盈利能力</td></tr>
+                            <tr><td>铜</td><td>CU.SHF</td><td>上期所</td></tr>
+                            <tr><td>铝</td><td>AL.SHF</td><td>上期所</td></tr>
+                            <tr><td>螺纹钢</td><td>RB.SHF</td><td>上期所</td></tr>
+                            <tr><td>铁矿石</td><td>I.DCE</td><td>大商所</td></tr>
+                            <tr><td>原油</td><td>SC.INE</td><td>能源中心</td></tr>
+                            <tr><td>PTA</td><td>TA.ZCE</td><td>郑商所</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <footer class="footer">
-                行业研究框架 v2.0 | 数据来源：广发证券、长江证券、中信建投研究报告
+                行业研究框架 v2.0 | 数据来源：广发证券、长江证券、中信建投、国泰海通研究报告
             </footer>
         </main>
     </div>
@@ -1068,38 +1290,118 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
     <script>
         // 显示行业
         function showIndustry(industry) {
-            document.querySelectorAll('.industry-panel').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.industry-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-            if (industry === 'metals') {
-                document.getElementById('metals-overview').style.display = 'block';
-            } else if (industry === 'api') {
-                document.getElementById('api-panel').style.display = 'block';
-            }
-        }
+            const panelMap = {
+                'metals': 'metals-panel',
+                'black': 'black-panel',
+                'energy': 'energy-panel',
+                'power': 'power-panel',
+                'tmt': 'tmt-panel',
+                'api': 'api-panel'
+            };
 
-        // 显示金属详情
-        function showMetal(metal) {
-            // 更新标签状态
-            document.querySelectorAll('.metal-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.metal-panel').forEach(p => p.classList.remove('active'));
-
-            // 找到对应标签并激活
-            const tabs = document.querySelectorAll('.metal-tab');
-            const metals = ['copper', 'aluminum', 'gold', 'lithium', 'cobalt'];
-            const index = metals.indexOf(metal);
-            if (index >= 0) {
-                tabs[index].classList.add('active');
-            }
-
-            // 显示对应面板
-            const panel = document.getElementById(metal + '-panel');
+            const panel = document.getElementById(panelMap[industry]);
             if (panel) {
                 panel.classList.add('active');
             }
 
-            // 确保金属概览显示
-            document.getElementById('metals-overview').style.display = 'block';
+            // 高亮导航
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(`'${industry}'`)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // 有色金属切换
+        function showMetal(metal) {
+            document.querySelectorAll('#metals-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#metals-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#metals-panel .metal-tab');
+            const metals = ['copper', 'aluminum', 'gold', 'lithium', 'cobalt'];
+            const index = metals.indexOf(metal);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(metal + '-panel');
+            if (panel) panel.classList.add('active');
+        }
+
+        // 黑色金属切换
+        function showBlack(type) {
+            document.querySelectorAll('#black-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#black-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#black-panel .metal-tab');
+            const types = ['steel', 'ironore'];
+            const index = types.indexOf(type);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(type + '-panel');
+            if (panel) panel.classList.add('active');
+        }
+
+        // 能源化工切换
+        function showEnergy(type) {
+            document.querySelectorAll('#energy-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#energy-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#energy-panel .metal-tab');
+            const types = ['oil', 'chemical'];
+            const index = types.indexOf(type);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(type + '-panel');
+            if (panel) panel.classList.add('active');
+        }
+
+        // 电力新能源切换
+        function showPower(type) {
+            document.querySelectorAll('#power-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#power-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#power-panel .metal-tab');
+            const types = ['pv', 'wind', 'storage', 'grid'];
+            const index = types.indexOf(type);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(type + '-panel');
+            if (panel) panel.classList.add('active');
+        }
+
+        // 显示行业后切换子面板
+        function showIndustryThen(industry, subType) {
+            showIndustry(industry);
+            setTimeout(() => {
+                if (industry === 'power') {
+                    showPower(subType);
+                } else if (industry === 'tmt') {
+                    showTMT(subType);
+                } else if (industry === 'metals') {
+                    showMetal(subType);
+                } else if (industry === 'black') {
+                    showBlack(subType);
+                } else if (industry === 'energy') {
+                    showEnergy(subType);
+                }
+            }, 10);
+        }
+
+        // TMT切换
+        function showTMT(type) {
+            document.querySelectorAll('#tmt-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#tmt-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#tmt-panel .metal-tab');
+            const types = ['optical', 'semiconductor', 'ai'];
+            const index = types.indexOf(type);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(type + '-panel');
+            if (panel) panel.classList.add('active');
         }
     </script>
 </body>
