@@ -371,7 +371,7 @@
         <nav class="sidebar">
             <div class="sidebar-header">
                 <h1>行业研究框架</h1>
-                <p>Industry Research Framework v2.0</p>
+                <p>Industry Research Framework v3.0</p>
             </div>
 
             <div class="nav-section">
@@ -393,6 +393,13 @@
                 </div>
                 <div class="nav-item nav-subitem" onclick="showIndustryThen('black', 'steel')">→ 钢铁</div>
                 <div class="nav-item nav-subitem" onclick="showIndustryThen('black', 'ironore')">→ 铁矿石</div>
+
+                <div class="nav-item" onclick="showIndustry('coal')">
+                    <span class="nav-item-icon">🔥</span>
+                    <span class="nav-item-text">煤炭</span>
+                </div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('coal', 'thermal')">→ 动力煤</div>
+                <div class="nav-item nav-subitem" onclick="showIndustryThen('coal', 'coking')">→ 炼焦煤</div>
 
                 <div class="nav-item" onclick="showIndustry('energy')">
                     <span class="nav-item-icon">⚡</span>
@@ -791,6 +798,144 @@
 - 铁矿定价权在海外，中国是价格接受者
 - 钢厂利润决定铁矿价格上限
 - 港口库存反映供需紧张程度
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 煤炭 -->
+            <div id="coal-panel" class="industry-panel">
+                <div class="card">
+                    <h2>煤炭行业研究框架</h2>
+                    <p>煤炭是主体能源，周期属性弱化、价值属性强化。动力煤看长协稳定性，炼焦煤看价格弹性。</p>
+
+                    <div class="driver-box">
+                        <div class="driver-card supply-demand">
+                            <h4>供给集中化</h4>
+                            <ul>
+                                <li>三西地区（晋陕蒙）占比71%</li>
+                                <li>新疆产量快速增长</li>
+                                <li>产能天花板约束明显</li>
+                            </ul>
+                        </div>
+                        <div class="driver-card financial">
+                            <h4>价值属性</h4>
+                            <ul>
+                                <li>周期属性弱化</li>
+                                <li>高分红、高股息</li>
+                                <li>ROE稳定性提升</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-tabs">
+                    <div class="metal-tab active" onclick="showCoal('thermal')">动力煤</div>
+                    <div class="metal-tab" onclick="showCoal('coking')">炼焦煤</div>
+                </div>
+
+                <!-- 动力煤分析面板 -->
+                <div id="thermal-panel" class="metal-panel active">
+                    <div class="card">
+                        <h2>动力煤 - 火电基石</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag">长协保护</span>
+                            <span class="tag green">分红稳定</span>
+                            <span class="tag">火电需求</span>
+                        </div>
+
+                        <h3>需求结构</h3>
+                        <table>
+                            <thead>
+                                <tr><th>下游</th><th>占比</th><th>特点</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>火电</td><td>61%</td><td>刚性需求，韧性足</td></tr>
+                                <tr><td>建材</td><td>9%</td><td>地产相关</td></tr>
+                                <tr><td>供热</td><td>8%</td><td>季节性</td></tr>
+                                <tr><td>化工</td><td>6%</td><td>煤化工需求</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>长协价格机制</h3>
+                        <div class="formula-box">
+基准价：675元/吨
+合理区间：570-770元/吨
+签订比例：规上企业80%以上
+
+长协政策保障煤企盈利稳定性
+                        </div>
+
+                        <h3>选股框架</h3>
+                        <table>
+                            <thead>
+                                <tr><th>类型</th><th>特点</th><th>代表公司</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>稳健型</td><td>长协比例高，分红稳定</td><td>中国神华、陕西煤业</td></tr>
+                                <tr><td>弹性型</td><td>现货比例高，业绩弹性大</td><td>山煤国际、潞安环能</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">601088.SH</div>
+                                <div class="company-name">中国神华</div>
+                                <div class="company-business">煤电一体化龙头，长协约80%</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">601225.SH</div>
+                                <div class="company-name">陕西煤业</div>
+                                <div class="company-business">优质动力煤，分红稳定</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 炼焦煤分析面板 -->
+                <div id="coking-panel" class="metal-panel">
+                    <div class="card">
+                        <h2>炼焦煤 - 稀缺资源</h2>
+                        <div style="margin: 15px 0;">
+                            <span class="tag red">稀缺性</span>
+                            <span class="tag">价格弹性</span>
+                            <span class="tag">地产相关</span>
+                        </div>
+
+                        <h3>与动力煤对比</h3>
+                        <table>
+                            <thead>
+                                <tr><th>维度</th><th>动力煤</th><th>炼焦煤</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>产量占比</td><td>81%</td><td>11%</td></tr>
+                                <tr><td>主产区</td><td>内蒙、陕西</td><td>山西(47%)</td></tr>
+                                <tr><td>地产拉动</td><td>约15%</td><td>约47%</td></tr>
+                                <tr><td>价格弹性</td><td>低（长协保护）</td><td>高（市场定价）</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h3>价格支撑位</h3>
+                        <div class="formula-box">
+港口动力煤：底部800元/吨
+港口主焦煤：底部1400-1600元/吨
+
+成本曲线陡峭化，支撑位上移
+                        </div>
+
+                        <h3>主要公司</h3>
+                        <div class="company-grid">
+                            <div class="company-card">
+                                <div class="company-code">000983.SZ</div>
+                                <div class="company-name">山西焦煤</div>
+                                <div class="company-business">炼焦煤龙头，资源禀赋优异</div>
+                            </div>
+                            <div class="company-card">
+                                <div class="company-code">601666.SH</div>
+                                <div class="company-name">平煤股份</div>
+                                <div class="company-business">主焦煤为主，弹性大</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1282,7 +1427,7 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
             </div>
 
             <footer class="footer">
-                行业研究框架 v2.0 | 数据来源：广发证券、长江证券、中信建投、国泰海通研究报告
+                行业研究框架 v3.0 | 数据来源：广发证券、长江证券、兴业证券、中信建投、国泰海通研究报告
             </footer>
         </main>
     </div>
@@ -1296,6 +1441,7 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
             const panelMap = {
                 'metals': 'metals-panel',
                 'black': 'black-panel',
+                'coal': 'coal-panel',
                 'energy': 'energy-panel',
                 'power': 'power-panel',
                 'tmt': 'tmt-panel',
@@ -1344,6 +1490,20 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
             if (panel) panel.classList.add('active');
         }
 
+        // 煤炭切换
+        function showCoal(type) {
+            document.querySelectorAll('#coal-panel .metal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#coal-panel .metal-panel').forEach(p => p.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('#coal-panel .metal-tab');
+            const types = ['thermal', 'coking'];
+            const index = types.indexOf(type);
+            if (index >= 0) tabs[index].classList.add('active');
+
+            const panel = document.getElementById(type + '-panel');
+            if (panel) panel.classList.add('active');
+        }
+
         // 能源化工切换
         function showEnergy(type) {
             document.querySelectorAll('#energy-panel .metal-tab').forEach(t => t.classList.remove('active'));
@@ -1384,6 +1544,8 @@ data = em.pedb.get_data([<span style="color:#22c55e;">'601899.SH'</span>], <span
                     showMetal(subType);
                 } else if (industry === 'black') {
                     showBlack(subType);
+                } else if (industry === 'coal') {
+                    showCoal(subType);
                 } else if (industry === 'energy') {
                     showEnergy(subType);
                 }
